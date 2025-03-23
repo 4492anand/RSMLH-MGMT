@@ -8,4 +8,4 @@ public class PatientController {
     public String getPatients() {
         return "List of patients";
     }
-}   
+}
