@@ -9,6 +9,20 @@ public class PatientDTO {
     private LocalDate dateOfBirth;
     private String gender;
     private String phoneNumber;
+    private String email;
+    private String emergencyContact;
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+    public void setEmergencyContact(String emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
     public Long getPatientId() {
         return patientId;
     }
@@ -48,8 +62,7 @@ public class PatientDTO {
     @Override
     public String toString() {
         return "PatientDTO [patientId=" + patientId + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", phoneNumber=" + phoneNumber + "]";
-    }
-
-    
+                + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", phoneNumber=" + phoneNumber + ", email="
+                + email + ", emergencyContact=" + emergencyContact + "]";
+    }    
 }

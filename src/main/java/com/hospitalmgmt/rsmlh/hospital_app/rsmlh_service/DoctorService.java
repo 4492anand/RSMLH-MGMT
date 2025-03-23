@@ -23,18 +23,21 @@ public class DoctorService {
         this.doctorRepository = doctorRepository;
     }
 
-    public DoctorDTO addDoctor(CreateDoctorDTO dto) {
-        // Create a new Doctor entity
+    public DoctorDTO addDoctor(String firstName, 
+    String lastName, String specialization,
+    String phoneNumber, String email)
+    {
+    // Create a new Doctor entity
         Doctor doctor = new Doctor();
-        doctor.setFirstName(dto.getFirstName());
-        doctor.setLastName(dto.getLastName());
-        doctor.setSpecialization(dto.getSpecialization());
-        doctor.setPhoneNumber(dto.getPhoneNumber());
-        doctor.setEmail(dto.getEmail());
+        doctor.setFirstName(firstName);
+        doctor.setLastName(lastName);
+        doctor.setSpecialization(specialization);
+        doctor.setPhoneNumber(phoneNumber);
+        doctor.setEmail(email);
 
         // Save the doctor to the database
         doctor = doctorRepository.save(doctor);
-        logger.debug("doctor-repo {}" ,doctor);
+        logger.debug("doctor-repo {}", doctor);
 
         // Map the saved Doctor entity to a DoctorDTO
         DoctorDTO doctorDTO = new DoctorDTO();
@@ -43,7 +46,7 @@ public class DoctorService {
         doctorDTO.setLastName(doctor.getLastName());
         doctorDTO.setSpecialization(doctor.getSpecialization());
         doctorDTO.setPhoneNumber(doctor.getPhoneNumber());
-        logger.debug("doctor-dto {}" ,doctorDTO);
+        logger.debug("doctor-dto {}", doctorDTO);
         return doctorDTO;
     }
 

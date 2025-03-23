@@ -21,11 +21,15 @@ public class DoctorController {
     }
 
     @PostMapping("/addDoctor")
-    public ResponseEntity<DoctorDTO>addDoctor(@RequestBody CreateDoctorDTO dto) {
-        DoctorDTO createdDoctor = doctorService.addDoctor(dto);
+    public ResponseEntity<DoctorDTO> addDoctor(
+            @RequestParam String firstName,
+            @RequestParam String lastName,
+            @RequestParam String specialization,
+            @RequestParam String phoneNumber,
+            @RequestParam String email) {
+        DoctorDTO createdDoctor = doctorService.addDoctor(firstName, lastName, specialization, phoneNumber, email);
         return new ResponseEntity<>(createdDoctor, HttpStatus.CREATED);
     }
-
 
     @GetMapping("/doctorId/{id}")
     public ResponseEntity<DoctorDTO> getDoctorById(@PathVariable Long id) {
