@@ -26,8 +26,6 @@ public class Appointment {
 
     @Column(name = "appointment_date_time")
     private LocalDateTime appointmentDateTime;
-
-    
     @Column(name = "status")
     private String status;
     @Column(name = "reason_for_visit")
@@ -44,9 +42,6 @@ public class Appointment {
     private String followUpInstructions;
     @Column(name = "notes")
     private String notes;
-    
-
-
     
     public Long getAppointmentId() {
         return appointmentId;

@@ -2,14 +2,16 @@ package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class CreateAppointmentDTO {
 
 private Long patientId;
     private Long doctorId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime appointmentDateTime;
     private String reasonForVisit;
 
-    
     public Long getPatientId() {
         return patientId;
     }

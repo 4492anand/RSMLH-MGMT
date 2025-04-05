@@ -40,6 +40,7 @@ public class DoctorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     } 
+    
     @GetMapping("/getAllDoctors")
     public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
         List<DoctorDTO> doctors = doctorService.getAllDoctors();
