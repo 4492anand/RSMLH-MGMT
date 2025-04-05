@@ -6,4 +6,6 @@ import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_entity.Doctor;
 @Repository
 public interface DoctorRepository  extends JpaRepository<Doctor , Long> {
 
+    boolean existsByPhoneNumber(String phoneNumber);
+
 }

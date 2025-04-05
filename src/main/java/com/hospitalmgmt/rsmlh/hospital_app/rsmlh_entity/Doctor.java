@@ -5,8 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
 
 @Entity
+@Table(name = "doctor", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"phone_number"})
+})
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +28,6 @@ public class Doctor {
     private String phoneNumber;
     @Column(name = "email")
     private String email;
-
-
 
     public Long getDoctorId() {
         return doctorId;

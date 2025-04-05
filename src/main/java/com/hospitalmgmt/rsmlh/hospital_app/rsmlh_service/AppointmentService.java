@@ -53,7 +53,7 @@ public class AppointmentService {
         return summaryDTO;
     }
 
-    public void completeAppointment(Long appointmentId, String diagnosis, String treatment,
+    public Appointment updateAppointment(Long appointmentId, String diagnosis, String treatment,
         String prescriptions, String testResults, String followUpInstructions) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
             .orElseThrow(() -> new RuntimeException("Appointment not found"));
@@ -64,8 +64,11 @@ public class AppointmentService {
         appointment.setTestResults(testResults);
         appointment.setFollowUpInstructions(followUpInstructions);
         appointmentRepository.save(appointment);
+        return appointment;
     }
-    public AppointmentDetailDTO getAppointmentDetails(Long id) {
+
+
+    public AppointmentDetailDTO getAppointmentDetailsbyId(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Appointment not found"));
         AppointmentDetailDTO dto = new AppointmentDetailDTO();

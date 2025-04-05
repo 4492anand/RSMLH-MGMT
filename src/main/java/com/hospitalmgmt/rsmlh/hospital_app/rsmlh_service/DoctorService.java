@@ -4,8 +4,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_controller.DoctorController;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.CreateDoctorDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.exception.DuplicatePatientException;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.DoctorDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_entity.Doctor;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_repository.DoctorRepository;
@@ -27,6 +26,10 @@ public class DoctorService {
     String lastName, String specialization,
     String phoneNumber, String email)
     {
+        // Check if a doctor with the same phone number already exists
+        if (doctorRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new DuplicatePatientException(phoneNumber);
+        }
     // Create a new Doctor entity
         Doctor doctor = new Doctor();
         doctor.setFirstName(firstName);
