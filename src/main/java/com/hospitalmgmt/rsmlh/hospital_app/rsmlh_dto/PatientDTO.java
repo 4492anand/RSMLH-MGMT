@@ -8,6 +8,7 @@ public class PatientDTO {
     private String lastName;
     private LocalDate dateOfBirth;
     private String gender;
+    private String address;
     private String phoneNumber;
     private String email;
     private String emergencyContact;
@@ -59,10 +60,18 @@ public class PatientDTO {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
     @Override
     public String toString() {
         return "PatientDTO [patientId=" + patientId + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", phoneNumber=" + phoneNumber + ", email="
-                + email + ", emergencyContact=" + emergencyContact + "]";
+                + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", address=" + address + ", phoneNumber="
+                + phoneNumber + ", email=" + email + ", emergencyContact=" + emergencyContact + "]";
     }    
+    
+
 }

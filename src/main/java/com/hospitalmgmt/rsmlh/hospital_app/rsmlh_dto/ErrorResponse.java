@@ -12,9 +12,6 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public ErrorResponse() {
-    }
-
     // Getters and Setters (or use Lombok @Data)
     public int getStatus() { return status; }
     public String getError() { return error; }

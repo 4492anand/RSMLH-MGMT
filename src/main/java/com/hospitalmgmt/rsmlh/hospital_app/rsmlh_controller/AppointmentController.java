@@ -1,9 +1,9 @@
 package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_controller;
 
 import java.util.List;
-import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.AppointmentDetailDTO;
@@ -15,7 +15,7 @@ import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_service.AppointmentService;
 
 
 @RestController
-@RequestMapping("/appointment")
+@RequestMapping("/rsmlhmgmt/appointments")
 public class AppointmentController {
     private final AppointmentService appointmentService;
 
@@ -46,7 +46,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/scheduleAppointment")
-    public ResponseEntity<AppointmentSummaryDTO> scheduleAppointment(@Valid @RequestBody CreateAppointmentDTO dto) {
+    public ResponseEntity<AppointmentSummaryDTO> scheduleAppointment(@Validated @RequestBody CreateAppointmentDTO dto) {
         AppointmentSummaryDTO summary = appointmentService.scheduleAppointment(dto);
         return ResponseEntity.ok(summary);
     }

@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+logs/app-debug.log.2025-04-03.0.gz
+logs/app-debug.log
+logs/app-debug.log.2025-04-04.0.gz
+
+logs/app-debug.log
+logs/app-debug.log*.gz
+logs/app-debug/

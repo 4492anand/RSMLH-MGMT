@@ -1,18 +1,15 @@
 package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.CreateDoctorDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.DoctorDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_service.DoctorService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/doctors")
+@RequestMapping("/rsmlhmgmt/doctors")
 public class DoctorController {
 
     private final DoctorService doctorService;
