@@ -7,6 +7,8 @@ public class DoctorDTO {
     private String lastName;
     private String specialization;
     private String phoneNumber;
+    private String address;
+    
     public Long getDoctorId() {
         return doctorId;
     }
