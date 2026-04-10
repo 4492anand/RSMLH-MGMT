@@ -9,9 +9,10 @@ import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_entity.Patient;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
+    boolean existsByFirstNameAndLastNameAndDateOfBirth(String firstName, String lastName, LocalDate dateOfBirth);
     List<Patient> findByFirstNameAndLastNameAndDateOfBirth(
-        String firstName,
-        String lastName,
-        LocalDate dateOfBirth
+            String firstName,
+            String lastName,
+            LocalDate dateOfBirth
     );
 }
