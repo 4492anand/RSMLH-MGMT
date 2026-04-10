@@ -58,5 +58,15 @@ public class PatientController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
-    }        
+    }
+
+    @DeleteMapping("/deletePatient/{id}")
+    public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
+        try {
+            patientService.deletePatient(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
