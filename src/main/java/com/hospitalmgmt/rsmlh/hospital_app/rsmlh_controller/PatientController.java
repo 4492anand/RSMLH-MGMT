@@ -1,5 +1,6 @@
 package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_controller;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.PatientDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.UpdatePatientDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_service.PatientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,11 @@ public class PatientController {
             @RequestParam String lastName,
             @RequestParam LocalDate dateOfBirth,
             @RequestParam String gender,
+            @RequestParam(required = false) String address,
             @RequestParam String phoneNumber,
             @RequestParam String email,
             @RequestParam String emergencyContact) {
-        PatientDTO patient = patientService.registerPatient(firstName, lastName, dateOfBirth, gender, phoneNumber, email, emergencyContact);
+        PatientDTO patient = patientService.registerPatient(firstName, lastName, dateOfBirth, gender, address, phoneNumber, email, emergencyContact);
         return new ResponseEntity<>(patient, HttpStatus.CREATED);
     }
 
@@ -50,19 +52,10 @@ public class PatientController {
     @PutMapping("/updatePatient/{id}")
     public ResponseEntity<PatientDTO> updatePatient(
             @PathVariable Long id,
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam LocalDate dateOfBirth,
-            @RequestParam String gender,
-            @RequestParam String address,
-            @RequestParam String phoneNumber,
-            @RequestParam String email,
-            @RequestParam String emergencyContact) {
-        try {   
-            PatientDTO updatedPatient = patientService.updatePatient(id,firstName, lastName, dateOfBirth, gender, address, phoneNumber, email, emergencyContact);
-            return ResponseEntity.ok(updatedPatient);
-        }
-        catch (RuntimeException e) {
+            @RequestBody UpdatePatientDTO dto) {
+        try {
+            return ResponseEntity.ok(patientService.updatePatient(id, dto));
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }        

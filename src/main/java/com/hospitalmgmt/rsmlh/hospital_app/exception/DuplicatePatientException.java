@@ -16,7 +16,7 @@ public class DuplicatePatientException extends RuntimeException {
 }
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-class PatientNotFoundException extends RuntimeException {
+public class PatientNotFoundException extends RuntimeException {
     public PatientNotFoundException(String message) {
         super(message);
     }
