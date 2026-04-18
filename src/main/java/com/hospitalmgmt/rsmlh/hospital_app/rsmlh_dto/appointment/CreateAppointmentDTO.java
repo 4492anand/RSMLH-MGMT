@@ -1,15 +1,24 @@
-package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto;
+package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.appointment;
 
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.*;
 
 public class CreateAppointmentDTO {
 
-private Long patientId;
+    @NotNull(message = "Patient ID is required")
+    private Long patientId;
+    
+    @NotNull(message = "Doctor ID is required")
     private Long doctorId;
+    
+    @NotNull(message = "Appointment date and time is required")
+    @Future(message = "Appointment must be scheduled in the future")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime appointmentDateTime;
+    
+    @NotBlank(message = "Reason for visit is required")
     private String reasonForVisit;
 
     public Long getPatientId() {

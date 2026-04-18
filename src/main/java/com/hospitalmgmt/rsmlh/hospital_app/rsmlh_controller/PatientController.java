@@ -1,17 +1,21 @@
 package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_controller;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.PatientDTO;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.UpdatePatientDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.patient.CreatePatientDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.patient.PatientDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.patient.UpdatePatientDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_service.PatientService;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/rsmlhmgmt/patients")
-public class PatientController {
+public class PatientController extends BaseController {
+    private static final Logger log = LoggerFactory.getLogger(PatientController.class);
     private final PatientService patientService;
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
@@ -19,54 +23,43 @@ public class PatientController {
     
 
     @PostMapping("/registerPatient")
-    public ResponseEntity<PatientDTO> addPatient(
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam LocalDate dateOfBirth,
-            @RequestParam String gender,
-            @RequestParam(required = false) String address,
-            @RequestParam String phoneNumber,
-            @RequestParam String email,
-            @RequestParam String emergencyContact) {
-        PatientDTO patient = patientService.registerPatient(firstName, lastName, dateOfBirth, gender, address, phoneNumber, email, emergencyContact);
+    public ResponseEntity<PatientDTO> addPatient(@Valid @RequestBody CreatePatientDTO dto) {
+        log.debug("Registering new patient: {} {}", dto.getFirstName(), dto.getLastName());
+        PatientDTO patient = patientService.registerPatient(dto.getFirstName(), dto.getLastName(), 
+                dto.getDateOfBirth(), dto.getGender(), dto.getAddress(), dto.getPhoneNumber(), 
+                dto.getEmail(), dto.getEmergencyContact());
+        log.debug("Patient registered successfully with ID: {}", patient.getPatientId());
         return new ResponseEntity<>(patient, HttpStatus.CREATED);
     }
 
-
     @GetMapping("/patientId/{id}")
     public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id) {
-        try {
-            PatientDTO patient = patientService.getPatientById(id);
-            return ResponseEntity.ok(patient);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        log.debug("Fetching patient with ID: {}", id);
+        PatientDTO patient = patientService.getPatientById(id);
+        return ResponseEntity.ok(patient);
     }
-
     @GetMapping("/allPatients")
     public ResponseEntity<List<PatientDTO>> getAllPatients() {
+        log.debug("Fetching all patients");
         List<PatientDTO> patients = patientService.getAllPatients();
+        log.debug("Retrieved {} patients", patients.size());
         return ResponseEntity.ok(patients);
     }
 
     @PutMapping("/updatePatient/{id}")
     public ResponseEntity<PatientDTO> updatePatient(
             @PathVariable Long id,
-            @RequestBody UpdatePatientDTO dto) {
-        try {
-            return ResponseEntity.ok(patientService.updatePatient(id, dto));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+            @Valid @RequestBody UpdatePatientDTO dto) {
+        log.debug("Updating patient with ID: {}", id);
+        PatientDTO updated = patientService.updatePatient(id, dto);
+        log.debug("Patient updated successfully: {}", id);
+        return ResponseEntity.ok(updated);
     }
-
     @DeleteMapping("/deletePatient/{id}")
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
-        try {
-            patientService.deletePatient(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        log.debug("Deleting patient with ID: {}", id);
+        patientService.deletePatient(id);
+        log.debug("Patient deleted successfully: {}", id);
+        return ResponseEntity.noContent().build();
     }
 }

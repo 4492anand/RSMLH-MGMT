@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hospitalmgmt.rsmlh.hospital_app.exception.DuplicatePatientException;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.DoctorDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.doctor.DoctorDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_entity.Doctor;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_repository.DoctorRepository;
 
@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
     private static final Logger logger = LoggerFactory.getLogger(DoctorService.class);
+    private static final Logger log = LoggerFactory.getLogger(DoctorService.class);
 
     // Constructor injection for DoctorRepository
     public DoctorService(DoctorRepository doctorRepository) {
@@ -26,8 +27,10 @@ public class DoctorService {
     String lastName, String specialization,
     String phoneNumber, String email)
     {
+        log.debug("Adding doctor: {} {}, phone: {}", firstName, lastName, phoneNumber);
         // Check if a doctor with the same phone number already exists
         if (doctorRepository.existsByPhoneNumber(phoneNumber)) {
+            log.debug("Duplicate phone number detected: {}", phoneNumber);
             throw new DuplicatePatientException(phoneNumber);
         }
     // Create a new Doctor entity
@@ -54,6 +57,7 @@ public class DoctorService {
     }
 
     public DoctorDTO getDoctorById(Long id) {
+        log.debug("Fetching doctor by ID: {}", id);
         // Fetch the doctor from the database
         Doctor doctor = doctorRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Doctor not found"));
@@ -70,6 +74,7 @@ public class DoctorService {
     }
 
     public List<DoctorDTO> getAllDoctors() {
+        log.debug("Fetching all doctors from database");
         // Fetch all doctors and map them to DoctorDTOs
         return doctorRepository.findAll().stream().map(doctor -> {
             DoctorDTO dto = new DoctorDTO();

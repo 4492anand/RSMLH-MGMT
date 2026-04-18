@@ -3,18 +3,22 @@ package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_service;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hospitalmgmt.rsmlh.hospital_app.exception.DuplicatePatientException;
 import com.hospitalmgmt.rsmlh.hospital_app.exception.PatientNotFoundException;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.PatientDTO;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.UpdatePatientDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.exception.ValidationException;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.patient.PatientDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.patient.UpdatePatientDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_entity.Patient;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_repository.PatientRepository;
 
 @Service
 public class PatientService {
+    private static final Logger log = LoggerFactory.getLogger(PatientService.class);
 
     private final PatientRepository patientRepository;
     public PatientService(PatientRepository patientRepository) {
@@ -24,9 +28,6 @@ public class PatientService {
     @Transactional
     public PatientDTO registerPatient(String firstName, String lastName, LocalDate dateOfBirth,
     String gender, String address, String phoneNumber, String email, String emergencyContact) {
-        validateRequiredFields(firstName, lastName, dateOfBirth, phoneNumber, email);
-        validateEmail(email);
-        
         if (patientRepository.existsByFirstNameAndLastNameAndDateOfBirth(firstName, lastName, dateOfBirth)) {
             throw new DuplicatePatientException("Patient already exists with the same name and date of birth");
         }
@@ -81,7 +82,6 @@ public class PatientService {
         }
         
         if (dto.getEmail() != null) {
-            validateEmail(dto.getEmail());
             patientRepository.findByEmail(dto.getEmail()).ifPresent(existingPatient -> {
                 if (!existingPatient.getPatientId().equals(id)) {
                     throw new DuplicatePatientException("Email already registered: " + dto.getEmail());
@@ -112,31 +112,6 @@ public class PatientService {
             throw new PatientNotFoundException("Patient not found with ID: " + id);
         }
         patientRepository.deleteById(id);
-    }
-
-    private void validateRequiredFields(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email) {
-        if (firstName == null || firstName.trim().isEmpty()) {
-            throw new IllegalArgumentException("First name is required");
-        }
-        if (lastName == null || lastName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Last name is required");
-        }
-        if (dateOfBirth == null) {
-            throw new IllegalArgumentException("Date of birth is required");
-        }
-        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
-            throw new IllegalArgumentException("Phone number is required");
-        }
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Email is required");
-        }
-    }
-
-    private void validateEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-        if (!email.matches(emailRegex)) {
-            throw new IllegalArgumentException("Invalid email format: " + email);
-        }
     }
 
     private PatientDTO toPatientDTO(Patient patient) {

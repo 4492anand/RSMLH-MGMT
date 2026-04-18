@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.AppointmentDetailDTO;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.AppointmentSummaryDTO;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.CreateAppointmentDTO;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.DoctorDTO;
-import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.PatientDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.appointment.AppointmentDetailDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.appointment.AppointmentSummaryDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.appointment.CreateAppointmentDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.doctor.DoctorDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.patient.PatientDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_entity.Appointment;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_entity.Doctor;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_entity.Patient;

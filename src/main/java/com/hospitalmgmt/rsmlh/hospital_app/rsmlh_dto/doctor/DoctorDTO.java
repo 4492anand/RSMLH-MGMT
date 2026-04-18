@@ -1,4 +1,4 @@
-package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto;
+package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.doctor;
 
 public class DoctorDTO {
 
