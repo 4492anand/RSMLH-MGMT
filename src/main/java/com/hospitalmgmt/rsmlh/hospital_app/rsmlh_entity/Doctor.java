@@ -7,12 +7,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Entity
 @Table(name = "doctor", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"phone_number"})
 })
+@Getter
+@Setter
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,43 +32,7 @@ public class Doctor {
     private String phoneNumber;
     @Column(name = "email")
     private String email;
-
-    public Long getDoctorId() {
-        return doctorId;
-    }
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
-    }
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    public String getSpecialization() {
-        return specialization;
-    }
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
-    }
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    @Column(name = "address")
+    private String address;
     
 }

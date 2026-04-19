@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.hospitalmgmt.rsmlh.hospital_app.exception.DuplicatePatientException;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.doctor.DoctorDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.doctor.UpdateDoctorDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_entity.Doctor;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_repository.DoctorRepository;
 
@@ -15,75 +16,73 @@ import java.util.stream.Collectors;
 @Service
 public class DoctorService {
     private final DoctorRepository doctorRepository;
-    private static final Logger logger = LoggerFactory.getLogger(DoctorService.class);
     private static final Logger log = LoggerFactory.getLogger(DoctorService.class);
 
-    // Constructor injection for DoctorRepository
     public DoctorService(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
     }
 
-    public DoctorDTO addDoctor(String firstName, 
-    String lastName, String specialization,
-    String phoneNumber, String email)
-    {
-        log.debug("Adding doctor: {} {}, phone: {}", firstName, lastName, phoneNumber);
-        // Check if a doctor with the same phone number already exists
-        if (doctorRepository.existsByPhoneNumber(phoneNumber)) {
-            log.debug("Duplicate phone number detected: {}", phoneNumber);
-            throw new DuplicatePatientException(phoneNumber);
+    public DoctorDTO addDoctor(DoctorDTO dto) {
+        log.debug("Adding doctor: {}",  dto);
+        if (doctorRepository.existsByPhoneNumber(dto.getPhoneNumber())) {
+            log.debug("Duplicate phone number detected: {}", dto.getPhoneNumber());
+            throw new DuplicatePatientException(dto.getPhoneNumber());
         }
-    // Create a new Doctor entity
         Doctor doctor = new Doctor();
-        doctor.setFirstName(firstName);
-        doctor.setLastName(lastName);
-        doctor.setSpecialization(specialization);
-        doctor.setPhoneNumber(phoneNumber);
-        doctor.setEmail(email);
-
-        // Save the doctor to the database
+        doctor.setFirstName(dto.getFirstName());
+        doctor.setLastName(dto.getLastName());
+        doctor.setSpecialization(dto.getSpecialization());
+        doctor.setPhoneNumber(dto.getPhoneNumber());
+        doctor.setEmail(dto.getEmail());
         doctor = doctorRepository.save(doctor);
-        logger.debug("doctor-repo {}", doctor);
-
-        // Map the saved Doctor entity to a DoctorDTO
-        DoctorDTO doctorDTO = new DoctorDTO();
-        doctorDTO.setDoctorId(doctor.getDoctorId());
-        doctorDTO.setFirstName(doctor.getFirstName());
-        doctorDTO.setLastName(doctor.getLastName());
-        doctorDTO.setSpecialization(doctor.getSpecialization());
-        doctorDTO.setPhoneNumber(doctor.getPhoneNumber());
-        logger.debug("doctor-dto {}", doctorDTO);
-        return doctorDTO;
+        log.debug("doctor-repo {}", doctor);
+        return toDoctorDTO(doctor);
     }
 
     public DoctorDTO getDoctorById(Long id) {
         log.debug("Fetching doctor by ID: {}", id);
-        // Fetch the doctor from the database
         Doctor doctor = doctorRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Doctor not found"));
+        return toDoctorDTO(doctor);
+    }
 
-        // Map the Doctor entity to a DoctorDTO
+    public List<DoctorDTO> getAllDoctors() {
+        log.debug("Fetching all doctors from database");
+        return doctorRepository.findAll().stream().map(this::toDoctorDTO).collect(Collectors.toList());
+    }
+
+    public DoctorDTO updateDoctor(Long id, UpdateDoctorDTO updateDTO) {
+        log.debug("Updating doctor with ID: {}", id);
+        Doctor doctor = doctorRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Doctor not found"));
+        
+        if (updateDTO.getPhoneNumber() != null && !updateDTO.getPhoneNumber().equals(doctor.getPhoneNumber())) {
+            if (doctorRepository.existsByPhoneNumber(updateDTO.getPhoneNumber())) {
+                throw new DuplicatePatientException(updateDTO.getPhoneNumber());
+            }
+            doctor.setPhoneNumber(updateDTO.getPhoneNumber());
+        }
+        
+        if (updateDTO.getEmail() != null) {
+            doctor.setEmail(updateDTO.getEmail());
+        }
+        
+        if (updateDTO.getAddress() != null) {
+            doctor.setAddress(updateDTO.getAddress());
+        }
+        
+        doctor = doctorRepository.save(doctor);
+        log.debug("Doctor updated successfully: {}", id);
+        return toDoctorDTO(doctor);
+    }
+
+    private DoctorDTO toDoctorDTO(Doctor doctor) {
         DoctorDTO dto = new DoctorDTO();
         dto.setDoctorId(doctor.getDoctorId());
         dto.setFirstName(doctor.getFirstName());
         dto.setLastName(doctor.getLastName());
         dto.setSpecialization(doctor.getSpecialization());
         dto.setPhoneNumber(doctor.getPhoneNumber());
-
         return dto;
-    }
-
-    public List<DoctorDTO> getAllDoctors() {
-        log.debug("Fetching all doctors from database");
-        // Fetch all doctors and map them to DoctorDTOs
-        return doctorRepository.findAll().stream().map(doctor -> {
-            DoctorDTO dto = new DoctorDTO();
-            dto.setDoctorId(doctor.getDoctorId());
-            dto.setFirstName(doctor.getFirstName());
-            dto.setLastName(doctor.getLastName());
-            dto.setSpecialization(doctor.getSpecialization());
-            dto.setPhoneNumber(doctor.getPhoneNumber());
-            return dto;
-        }).collect(Collectors.toList());
     }
 }

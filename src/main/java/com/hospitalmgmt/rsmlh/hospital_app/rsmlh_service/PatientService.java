@@ -47,7 +47,8 @@ public class PatientService {
         patient.setPhoneNumber(phoneNumber);
         patient.setEmail(email);
         patient.setEmergencyContact(emergencyContact);
-        return toPatientDTO(patientRepository.save(patient));
+        patient = patientRepository.save(patient);
+        return toPatientDTO(patient);
     }
 
     // returns full dto based on patient ID
@@ -65,20 +66,14 @@ public class PatientService {
     public PatientDTO updatePatient(Long id, UpdatePatientDTO dto) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found with ID: " + id));
-
-        if (dto.getFirstName() != null || dto.getLastName() != null || dto.getDateOfBirth() != null) {
-            String firstName = dto.getFirstName() != null ? dto.getFirstName() : patient.getFirstName();
-            String lastName = dto.getLastName() != null ? dto.getLastName() : patient.getLastName();
-            LocalDate dateOfBirth = dto.getDateOfBirth() != null ? dto.getDateOfBirth() : patient.getDateOfBirth();
-            
-            List<Patient> existingPatients = patientRepository.findByFirstNameAndLastNameAndDateOfBirth(firstName, lastName, dateOfBirth);
-            if (!existingPatients.isEmpty() && existingPatients.stream().anyMatch(p -> !p.getPatientId().equals(id))) {
-                throw new DuplicatePatientException("Another patient already exists with the same name and date of birth");
-            }
-            
-            patient.setFirstName(firstName);
-            patient.setLastName(lastName);
-            patient.setDateOfBirth(dateOfBirth);
+        
+        if (dto.getPhoneNumber() != null) {
+            patientRepository.findByPhoneNumber(dto.getPhoneNumber()).ifPresent(existingPatient -> {
+                if (!existingPatient.getPatientId().equals(id)) {
+                    throw new DuplicatePatientException("Phone number already registered: " + dto.getPhoneNumber());
+                }
+            });
+            patient.setPhoneNumber(dto.getPhoneNumber());
         }
         
         if (dto.getEmail() != null) {
@@ -90,18 +85,18 @@ public class PatientService {
             patient.setEmail(dto.getEmail());
         }
         
-        if (dto.getPhoneNumber() != null) {
-            patientRepository.findByPhoneNumber(dto.getPhoneNumber()).ifPresent(existingPatient -> {
-                if (!existingPatient.getPatientId().equals(id)) {
-                    throw new DuplicatePatientException("Phone number already registered: " + dto.getPhoneNumber());
-                }
-            });
-            patient.setPhoneNumber(dto.getPhoneNumber());
+        if (dto.getAddress() != null) {
+            patient.setAddress(dto.getAddress());
         }
         
-        if (dto.getGender() != null) patient.setGender(dto.getGender());
-        if (dto.getAddress() != null) patient.setAddress(dto.getAddress());
-        if (dto.getEmergencyContact() != null) patient.setEmergencyContact(dto.getEmergencyContact());
+        if (dto.getEmergencyNumber() != null) {
+            patientRepository.findByEmergencyContact(dto.getEmergencyNumber()).ifPresent(existingPatient -> {
+                if (!existingPatient.getPatientId().equals(id)) {
+                    throw new DuplicatePatientException("Emergency contact already registered: " + dto.getEmergencyNumber());
+                }
+            });
+            patient.setEmergencyContact(dto.getEmergencyNumber());
+        }
 
         return toPatientDTO(patientRepository.save(patient));
     }

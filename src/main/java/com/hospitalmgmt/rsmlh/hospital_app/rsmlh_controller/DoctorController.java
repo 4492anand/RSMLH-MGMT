@@ -6,7 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.doctor.DoctorDTO;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.doctor.UpdateDoctorDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_service.DoctorService;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -21,14 +24,9 @@ public class DoctorController extends BaseController {
     }
 
     @PostMapping("/addDoctor")
-    public ResponseEntity<DoctorDTO> addDoctor(
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam String specialization,
-            @RequestParam String phoneNumber,
-            @RequestParam String email) {
-        log.debug("Adding new doctor: {} {}, specialization: {}", firstName, lastName, specialization);
-        DoctorDTO createdDoctor = doctorService.addDoctor(firstName, lastName, specialization, phoneNumber, email);
+    public ResponseEntity<DoctorDTO> addDoctor(@RequestParam DoctorDTO dto) {
+        log.debug("Adding new doctor: {}", dto);
+        DoctorDTO createdDoctor = doctorService.addDoctor(dto);
         log.debug("Doctor added successfully with ID: {}", createdDoctor.getDoctorId());
         return new ResponseEntity<>(createdDoctor, HttpStatus.CREATED);
     }
@@ -46,5 +44,15 @@ public class DoctorController extends BaseController {
         List<DoctorDTO> doctors = doctorService.getAllDoctors();
         log.debug("Retrieved {} doctors", doctors.size());
         return new ResponseEntity<>(doctors, HttpStatus.OK);
+    }
+
+    @PutMapping("/updateDoctor/{id}")
+    public ResponseEntity<DoctorDTO> updateDoctor(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateDoctorDTO updateDTO) {
+        log.debug("Updating doctor with ID: {}", id);
+        DoctorDTO updatedDoctor = doctorService.updateDoctor(id, updateDTO);
+        log.debug("Doctor updated successfully: {}", id);
+        return ResponseEntity.ok(updatedDoctor);
     }
 }

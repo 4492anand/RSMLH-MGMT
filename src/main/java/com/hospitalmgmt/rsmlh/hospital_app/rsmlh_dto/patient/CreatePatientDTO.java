@@ -2,12 +2,10 @@ package com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.patient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.Data;
 import java.time.LocalDate;
-@Getter
-@Setter
+
+@Data
 public class CreatePatientDTO {
 
     @NotBlank(message = "First name is required")
@@ -22,20 +20,12 @@ public class CreatePatientDTO {
     @Pattern(regexp = "^(Male|Female|Other)$", message = "Gender must be Male, Female, or Other")
     private String gender;
     private String address;
-    @Pattern(regexp = "^[0-9+\\-() ]+$", message = "Invalid phone number format")
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^[0-9+\\-() ]{10}$", message = "Invalid phone number format. Must be 1-10 characters")
     private String phoneNumber;
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
     private String emergencyContact;
 
-    @Override
-    public String toString() {
-        return "CreatePatientDTO [firstName=" + firstName + ", lastName=" + lastName + ", dateOfBirth=" + dateOfBirth
-                + ", gender=" + gender + ", address=" + address + ", phoneNumber=" + phoneNumber + ", email=" + email
-                + ", emergencyContact=" + emergencyContact + "]";
-    }
-
-    
-    
 }

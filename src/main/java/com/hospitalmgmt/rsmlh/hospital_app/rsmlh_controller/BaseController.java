@@ -29,7 +29,7 @@ public abstract class BaseController {
                 .collect(Collectors.joining(", "));
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                "Validation Failed",
+                "Bad Request",
                 message
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
