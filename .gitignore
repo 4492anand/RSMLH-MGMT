@@ -1,0 +1,10 @@
+.idea/
+.gradle/
+build/
+logs/
+data/
+gradlew
+gradlew.bat
+gradle/
+settings.gradle
+frontend/

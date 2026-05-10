@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hospitalmgmt.rsmlh.hospital_app.exception.DuplicatePatientException;
+import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.doctor.CreateDoctorDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.doctor.DoctorDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_dto.doctor.UpdateDoctorDTO;
 import com.hospitalmgmt.rsmlh.hospital_app.rsmlh_entity.Doctor;
@@ -22,7 +23,7 @@ public class DoctorService {
         this.doctorRepository = doctorRepository;
     }
 
-    public DoctorDTO addDoctor(DoctorDTO dto) {
+    public DoctorDTO addDoctor(CreateDoctorDTO dto) {
         log.debug("Adding doctor: {}",  dto);
         if (doctorRepository.existsByPhoneNumber(dto.getPhoneNumber())) {
             log.debug("Duplicate phone number detected: {}", dto.getPhoneNumber());
@@ -83,6 +84,8 @@ public class DoctorService {
         dto.setLastName(doctor.getLastName());
         dto.setSpecialization(doctor.getSpecialization());
         dto.setPhoneNumber(doctor.getPhoneNumber());
+        dto.setEmail(doctor.getEmail());
+        dto.setAddress(doctor.getAddress());
         return dto;
     }
 }

@@ -15,4 +15,5 @@ public class UpdatePatientDTO {
     @Pattern(regexp = "^[0-9]{10}$", message = "Emergency contact must be 10 digits")
     private String emergencyNumber;
     private String address;
+    private String gender;
 }

@@ -21,7 +21,7 @@ public class CreatePatientDTO {
     private String gender;
     private String address;
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^[0-9+\\-() ]{10}$", message = "Invalid phone number format. Must be 1-10 characters")
+    @Pattern(regexp = "^[0-9+\\-() ]{1,20}$", message = "Invalid phone number format. Must be 1-20 characters")
     private String phoneNumber;
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")

@@ -22,10 +22,11 @@ public class DoctorDTO {
     
     @NotBlank(message = "Specialization is required")
     @Size(min = 2, max = 100, message = "Specialization must be between 2 and 100 characters")
+    @Pattern(regexp = "^(CARDIOLOGY|DERMATOLOGY|EMERGENCY_MEDICINE|ENDOCRINOLOGY|GASTROENTEROLOGY|GENERAL_PRACTICE|GERIATRICS|HEMATOLOGY|INFECTIOUS_DISEASE|INTERNAL_MEDICINE|NEPHROLOGY|NEUROLOGY|OBSTETRICS_AND_GYNECOLOGY|ONCOLOGY|OPHTHALMOLOGY|ORTHOPEDICS|OTOLARYNGOLOGY|PEDIATRICS|PSYCHIATRY|PULMONOLOGY|RADIOLOGY|RHEUMATOLOGY|SURGERY|UROLOGY)$", message = "Invalid specialization")
     private String specialization;
     
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
+    @Pattern(regexp = "^[0-9+\\-() ]{1,20}$", message = "Invalid phone number format. Must be 1-20 characters")
     private String phoneNumber;
     
     @NotBlank(message = "Email is required")
