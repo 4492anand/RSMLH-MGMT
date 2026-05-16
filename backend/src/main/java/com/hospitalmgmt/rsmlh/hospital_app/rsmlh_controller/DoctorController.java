@@ -66,4 +66,12 @@ public class DoctorController extends BaseController {
         log.debug("Doctor updated successfully: {}", id);
         return ResponseEntity.ok(updatedDoctor);
     }
+
+    @DeleteMapping("/deleteDoctor/{id}")
+    public ResponseEntity<DoctorDTO> deleteDoctor(@PathVariable Long id) {
+        log.debug("Deleting doctor with ID: {}", id);
+        DoctorDTO deletedDoctor = doctorService.deleteDoctor(id);
+        log.debug("Doctor deleted successfully: {}", id);
+        return ResponseEntity.ok(deletedDoctor);
+    }
 }

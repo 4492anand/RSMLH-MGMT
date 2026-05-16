@@ -19,6 +19,10 @@ public class DoctorDTO {
     @NotBlank(message = "Last name is required")
     @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
     private String lastName;
+
+    @NotBlank(message = "Gender is required")
+    @Pattern(regexp = "^(Male|Female|Other)$", message = "Invalid gender")
+    private String gender;
     
     @NotBlank(message = "Specialization is required")
     @Size(min = 2, max = 100, message = "Specialization must be between 2 and 100 characters")

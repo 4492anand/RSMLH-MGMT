@@ -32,9 +32,11 @@ public class DoctorService {
         Doctor doctor = new Doctor();
         doctor.setFirstName(dto.getFirstName());
         doctor.setLastName(dto.getLastName());
+        doctor.setGender(dto.getGender());
         doctor.setSpecialization(dto.getSpecialization());
         doctor.setPhoneNumber(dto.getPhoneNumber());
         doctor.setEmail(dto.getEmail());
+        doctor.setAddress(dto.getAddress());
         doctor = doctorRepository.save(doctor);
         log.debug("doctor-repo {}", doctor);
         return toDoctorDTO(doctor);
@@ -57,6 +59,12 @@ public class DoctorService {
         Doctor doctor = doctorRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Doctor not found"));
         
+        if (updateDTO.getFirstName() != null) {
+            doctor.setFirstName(updateDTO.getFirstName());
+        }
+        if (updateDTO.getLastName() != null) {
+            doctor.setLastName(updateDTO.getLastName());
+        }
         if (updateDTO.getPhoneNumber() != null && !updateDTO.getPhoneNumber().equals(doctor.getPhoneNumber())) {
             if (doctorRepository.existsByPhoneNumber(updateDTO.getPhoneNumber())) {
                 throw new DuplicatePatientException(updateDTO.getPhoneNumber());
@@ -67,13 +75,23 @@ public class DoctorService {
         if (updateDTO.getEmail() != null) {
             doctor.setEmail(updateDTO.getEmail());
         }
-        
         if (updateDTO.getAddress() != null) {
             doctor.setAddress(updateDTO.getAddress());
         }
-        
+        if (updateDTO.getSpecialization() != null) {
+            doctor.setSpecialization(updateDTO.getSpecialization());
+        }
         doctor = doctorRepository.save(doctor);
         log.debug("Doctor updated successfully: {}", id);
+        return toDoctorDTO(doctor);
+    }
+
+    public DoctorDTO deleteDoctor(Long id) {
+        log.debug("Deleting doctor with ID: {}", id);
+        Doctor doctor = doctorRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Doctor not found"));
+        doctorRepository.delete(doctor);
+        log.debug("Doctor deleted successfully: {}", id);
         return toDoctorDTO(doctor);
     }
 
@@ -82,6 +100,7 @@ public class DoctorService {
         dto.setDoctorId(doctor.getDoctorId());
         dto.setFirstName(doctor.getFirstName());
         dto.setLastName(doctor.getLastName());
+        dto.setGender(doctor.getGender());
         dto.setSpecialization(doctor.getSpecialization());
         dto.setPhoneNumber(doctor.getPhoneNumber());
         dto.setEmail(doctor.getEmail());
