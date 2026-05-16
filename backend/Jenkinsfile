@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build & Deploy') {
+            steps {
+                dir('backend') {
+                    sh 'docker compose down'
+                    sh 'docker compose up -d --build'
+                }
+            }
+        }
+    }
+    post {
+        failure {
+            echo 'Deployment failed!'
+        }
+        success {
+            echo 'Deployment successful!'
+        }
+    }
+}
