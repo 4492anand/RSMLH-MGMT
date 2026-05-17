@@ -1,13 +1,25 @@
-# Frontend
-frontend/node_modules/
-frontend/dist/
-frontend/.vite/
+# Ignore backend entirely on UI branch
+backend/
 
-# Gradle
-.gradle/
+# Frontend build artifacts
+node_modules/
+dist/
+dist-ssr/
+*.local
 
-# IntelliJ
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor
+.vscode/
 .idea/
-*.iml
-*.iws
-*.ipr
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
