@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const api = axios.create({ baseURL: '/rsmlhmgmt' });
+const api = axios.create({
+  baseURL: '/rsmlhmgmt',
+  headers: { 'Content-Type': 'application/json' },
+});
 
 // Patients
 export const getPatients = () => api.get('/patients/allPatients');
@@ -14,6 +17,7 @@ export const getDoctors = () => api.get('/doctors/getAllDoctors');
 export const getDoctorById = (id) => api.get(`/doctors/doctorId/${id}`);
 export const createDoctor = (data) => api.post('/doctors/addDoctor', data);
 export const updateDoctor = (id, data) => api.put(`/doctors/updateDoctor/${id}`, data);
+export const getSpecializations = () => api.get('/doctors/specializations');
 
 // Appointments
 export const getAppointments = () => api.get('/appointments/allAppointments');

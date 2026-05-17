@@ -1,11 +1,16 @@
 # Ignore backend entirely on UI branch
 backend/
 
-# Frontend build artifacts
+# Dependencies
 node_modules/
+
+# Build output
 dist/
 dist-ssr/
 *.local
+
+# Vite cache
+.vite/
 
 # Logs
 logs/
