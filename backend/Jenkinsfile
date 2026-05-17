@@ -9,8 +9,10 @@ pipeline {
         stage('Build & Deploy') {
             steps {
                 dir('backend') {
-                    sh 'docker-compose down'
-                    sh 'docker-compose up -d --build'
+                    sh 'docker build -t hospital-app .'
+                    sh 'docker stop hospital-app-container 2>/dev/null || true'
+                    sh 'docker rm hospital-app-container 2>/dev/null || true'
+                    sh 'docker run -d --name hospital-app-container -p 8080:8080 hospital-app'
                 }
             }
         }
