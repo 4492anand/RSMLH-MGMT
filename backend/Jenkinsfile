@@ -13,16 +13,6 @@ pipeline {
                 }
             }
         }
-        stage('Setup Node.js') {
-            steps {
-                sh '''
-                    if ! command -v npm &> /dev/null; then
-                        curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
-                        sudo apt-get install -y nodejs
-                    fi
-                '''
-            }
-        }
         stage('Build & Deploy Backend') {
             steps {
                 dir('backend') {
