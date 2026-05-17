@@ -9,8 +9,8 @@ pipeline {
         stage('Build & Deploy') {
             steps {
                 dir('backend') {
-                    sh 'docker compose down'
-                    sh 'docker compose up -d --build'
+                    sh 'docker-compose down'
+                    sh 'docker-compose up -d --build'
                 }
             }
         }
