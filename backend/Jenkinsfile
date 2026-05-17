@@ -12,8 +12,8 @@ pipeline {
                     sh 'docker build -t hospital-app .'
                     sh 'docker stop hospital-app-container 2>/dev/null || true'
                     sh 'docker rm hospital-app-container 2>/dev/null || true'
+                    sh 'docker rmi hospital-app:latest 2>/dev/null || true'
                     sh 'docker run -d --name hospital-app-container -p 8081:8080 hospital-app'
-                    sh 'docker image prune -f'
                     sh 'docker builder prune -af --filter "until=24h"'
                 }
             }
