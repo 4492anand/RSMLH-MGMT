@@ -47,6 +47,9 @@ pipeline {
         }
     }
     post {
+        always {
+            cleanWs(deleteDirs: true, disableDeferredWipeout: true)
+        }
         failure {
             echo 'Deployment failed!'
         }
