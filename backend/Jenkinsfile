@@ -6,7 +6,7 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build & Deploy') {
+        stage('Build & Deploy Backend') {
             steps {
                 dir('backend') {
                     sh 'docker build -t hospital-app .'
@@ -16,6 +16,11 @@ pipeline {
                     sh 'docker image prune -af --filter "until=24h"'
                     sh 'docker builder prune -af --filter "until=24h"'
                 }
+            }
+        }
+        stage('Build & Deploy Frontend') {
+            steps {
+                build job: 'frontend-deploy', wait: false
             }
         }
     }
