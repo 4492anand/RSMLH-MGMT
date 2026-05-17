@@ -1,10 +1,2 @@
-.idea/
-.gradle/
-build/
-logs/
-data/
-gradlew
-gradlew.bat
-gradle/
-settings.gradle
+# Ignore frontend entirely on backend branch
 frontend/
