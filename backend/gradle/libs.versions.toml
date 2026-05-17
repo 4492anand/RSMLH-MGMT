@@ -1,0 +1,37 @@
+[versions]
+springBoot              = "3.4.4"
+dependencyManagement    = "1.1.7"
+springdoc               = "2.6.0"
+hibernateValidator      = "8.0.2.Final"
+lombok                  = "1.18.32"
+jackson                 = "2.18.3"
+
+[libraries]
+# Spring Boot
+spring-web              = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-data-jpa         = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+spring-actuator         = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-devtools         = { module = "org.springframework.boot:spring-boot-devtools" }
+spring-docker-compose   = { module = "org.springframework.boot:spring-boot-docker-compose" }
+spring-test             = { module = "org.springframework.boot:spring-boot-starter-test" }
+
+# Jackson
+jackson-databind        = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-jsr310          = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
+
+# OpenAPI / Swagger
+springdoc-openapi       = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+
+# Validation
+hibernate-validator     = { module = "org.hibernate.validator:hibernate-validator", version.ref = "hibernateValidator" }
+
+# Lombok
+lombok                  = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+# Database
+postgresql              = { module = "org.postgresql:postgresql" }
+h2                      = { module = "com.h2database:h2" }
+
+[plugins]
+spring-boot             = { id = "org.springframework.boot", version.ref = "springBoot" }
+dependency-management   = { id = "io.spring.dependency-management", version.ref = "dependencyManagement" }

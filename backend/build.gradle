@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.4'
-    id 'io.spring.dependency-management' version '1.1.7'
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.dependency.management)
 }
 
 group = 'com.hospitalmgmt.rsmlh'
@@ -18,22 +18,25 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    implementation 'org.hibernate.validator:hibernate-validator:8.0.2.Final'
-    runtimeOnly 'org.postgresql:postgresql'
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
+    implementation libs.spring.web
+    implementation libs.spring.data.jpa
+    implementation libs.spring.actuator
+    implementation libs.jackson.databind
+    implementation libs.jackson.jsr310
+    implementation libs.springdoc.openapi
+    implementation libs.hibernate.validator
 
-    compileOnly 'org.projectlombok:lombok:1.18.32'
-    annotationProcessor 'org.projectlombok:lombok:1.18.32'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'com.h2database:h2'
+    developmentOnly libs.spring.devtools
+
+    runtimeOnly libs.postgresql
+    runtimeOnly libs.h2
+    runtimeOnly libs.spring.docker.compose
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    testImplementation libs.spring.test
+    testRuntimeOnly libs.h2
 }
 
 test {
