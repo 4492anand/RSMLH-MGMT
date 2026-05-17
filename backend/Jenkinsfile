@@ -1,9 +1,16 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Checkout Backend') {
             steps {
                 checkout scm
+            }
+        }
+        stage('Checkout Frontend') {
+            steps {
+                dir('frontend') {
+                    git branch: 'rsmlh-ui-dev', url: 'https://github.com/4492anand/RSMLH-MGMT.git'
+                }
             }
         }
         stage('Build & Deploy Backend') {
@@ -20,7 +27,7 @@ pipeline {
         }
         stage('Build & Deploy Frontend') {
             steps {
-                dir('frontend') {
+                dir('frontend/frontend') {
                     sh 'npm install'
                     sh 'npm run build'
                     sh 'kill $(lsof -t -i:3000) || true'
