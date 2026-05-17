@@ -13,6 +13,16 @@ pipeline {
                 }
             }
         }
+        stage('Setup Node.js') {
+            steps {
+                sh '''
+                    if ! command -v npm &> /dev/null; then
+                        curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+                        apt-get install -y nodejs
+                    fi
+                '''
+            }
+        }
         stage('Build & Deploy Backend') {
             steps {
                 dir('backend') {
@@ -28,10 +38,10 @@ pipeline {
         stage('Build & Deploy Frontend') {
             steps {
                 dir('frontend/frontend') {
-                    sh 'docker run --rm -v $(pwd):/app -w /app node:20 npm install'
-                    sh 'docker run --rm -v $(pwd):/app -w /app node:20 npm run build'
+                    sh 'npm install'
+                    sh 'npm run build'
                     sh 'kill $(lsof -t -i:3000) || true'
-                    sh 'docker run -d --name frontend-app -p 3000:3000 -v $(pwd):/app -w /app node:20 npx vite preview --host 0.0.0.0 --port 3000'
+                    sh 'nohup npm run preview -- --port 3000 > frontend.log 2>&1 &'
                 }
             }
         }
