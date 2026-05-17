@@ -16,7 +16,7 @@ pipeline {
         stage('Build Backend') {
             steps {
                 dir('backend') {
-                    bat 'gradlew.bat clean build -x test'
+                    sh './gradlew clean build -x test'
                 }
             }
         }
@@ -24,8 +24,8 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 dir('frontend') {
-                    bat 'npm install'
-                    bat 'npm run build'
+                    sh 'npm install'
+                    sh 'npm run build'
                 }
             }
         }
@@ -34,13 +34,11 @@ pipeline {
             steps {
                 script {
                     // Kill existing backend process
-                    bat '''
-                        for /f "tokens=5" %%a in ('netstat -aon ^| find ":8081" ^| find "LISTENING"') do taskkill /F /PID %%a
-                    ''' 
+                    sh 'kill $(lsof -t -i:8081) || true'
                     
                     // Start backend
                     dir('backend') {
-                        bat 'start "backend" java -jar build\\libs\\*.jar --server.port=8081'
+                        sh 'nohup java -jar build/libs/*.jar --server.port=8081 > backend.log 2>&1 &'
                     }
                     
                     sleep 10
@@ -52,13 +50,11 @@ pipeline {
             steps {
                 script {
                     // Kill existing frontend process
-                    bat '''
-                        for /f "tokens=5" %%a in ('netstat -aon ^| find ":3000" ^| find "LISTENING"') do taskkill /F /PID %%a
-                    '''
+                    sh 'kill $(lsof -t -i:3000) || true'
                     
                     // Start frontend
                     dir('frontend') {
-                        bat 'start "frontend" npm run preview -- --port 3000'
+                        sh 'nohup npm run preview -- --port 3000 > frontend.log 2>&1 &'
                     }
                     
                     sleep 5
@@ -68,8 +64,8 @@ pipeline {
         
         stage('Health Check') {
             steps {
-                bat 'curl -f http://localhost:8081/actuator/health || echo Backend check failed'
-                bat 'curl -f http://localhost:3000 || echo Frontend check failed'
+                sh 'curl -f http://localhost:8081/actuator/health || echo Backend check failed'
+                sh 'curl -f http://localhost:3000 || echo Frontend check failed'
             }
         }
     }
